@@ -1,14 +1,15 @@
 package curso.ejemplo.caso_practico_3_1;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.SensorEventListener;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private SensorManager mSensorManager;
@@ -24,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         mTextSensorLight = (TextView) findViewById(R.id.label_light);
         mTextSensorProximity = (TextView) findViewById(R.id.label_proximity);
-
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         mSensorProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
@@ -47,14 +47,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onStop() {
         super.onStop();
-
         mSensorManager.unregisterListener(this);
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         int sensorType = sensorEvent.sensor.getType();
-
         float currentValue = sensorEvent.values[0];
 
         switch (sensorType) {
@@ -69,6 +67,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-    }
+    public void onAccuracyChanged(Sensor sensor, int i) { }
 }
