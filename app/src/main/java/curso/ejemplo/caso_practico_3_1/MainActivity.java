@@ -10,16 +10,10 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private SensorManager mSensorManager;
-
-    // Individual light and proximity sensors.
     private Sensor mSensorProximity;
     private Sensor mSensorLight;
-
-    // TextViews to display current sensor values
     private TextView mTextSensorLight;
     private TextView mTextSensorProximity;
 
@@ -28,48 +22,39 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mTextSensorLight = (TextView) findViewById(R.id.label_light);
+        mTextSensorProximity = (TextView) findViewById(R.id.label_proximity);
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         mSensorProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         mSensorLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
-        mTextSensorLight = (TextView) findViewById(R.id.label_light);
-        mTextSensorProximity = (TextView) findViewById(R.id.label_proximity);
-
         String sensor_error = getResources().getString(R.string.error_no_sensor);
 
-        if (mSensorLight == null) {
-            mTextSensorLight.setText(sensor_error);
-        }
-
-        if (mSensorProximity == null) {
-            mTextSensorProximity.setText(sensor_error);
-        }
+        if (mSensorLight == null) { mTextSensorLight.setText(sensor_error); }
+        if (mSensorProximity == null) { mTextSensorProximity.setText(sensor_error); }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        if (mSensorProximity != null) {
-            mSensorManager.registerListener(this, mSensorProximity,
-                    SensorManager.SENSOR_DELAY_NORMAL);
-        }
-        if (mSensorLight != null) {
-            mSensorManager.registerListener(this, mSensorLight,
-                    SensorManager.SENSOR_DELAY_NORMAL);
-        }
+        if (mSensorProximity != null) { mSensorManager.registerListener(this, mSensorProximity, SensorManager.SENSOR_DELAY_NORMAL); }
+        if (mSensorLight != null) { mSensorManager.registerListener(this, mSensorLight, SensorManager.SENSOR_DELAY_NORMAL); }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+
         mSensorManager.unregisterListener(this);
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         int sensorType = sensorEvent.sensor.getType();
+
         float currentValue = sensorEvent.values[0];
 
         switch (sensorType) {
